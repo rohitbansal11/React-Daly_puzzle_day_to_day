@@ -1,0 +1,11 @@
+
+// Requiring module
+const moment = require('moment');
+  
+var bool1 = moment('2010-08-21')
+    .isSame('2010-09-21'); //false
+console.log(bool1);
+  
+var bool2 = moment('2019-10-20')
+    .isSame('2019-10-20'); //true
+console.log(bool2);
