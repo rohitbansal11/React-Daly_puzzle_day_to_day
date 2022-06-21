@@ -1,0 +1,2 @@
+var suffix = hour >= 12 ? "PM":"AM";
+var hours = ((hour + 11) % 12 + 1) + suffix
