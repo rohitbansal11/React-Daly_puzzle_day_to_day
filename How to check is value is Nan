@@ -1,5 +1,5 @@
-"Is true NaN? " + Number.isNaN(true) + "<br>" +
-"Is true NaN? " + Number.isNaN(false) + "<br>" +
-"Is undefined NaN? " + Number.isNaN(undefined) + "<br>" +
-"Is 'NaN' NaN? " + Number.isNaN('NaN') + "<br>" +
-"Is NaN NaN? " + Number.isNaN(NaN);
+ Number.isNaN(true) 
+ Number.isNaN(false) 
+ Number.isNaN(undefined) 
+ Number.isNaN('NaN') 
+ Number.isNaN(NaN);
