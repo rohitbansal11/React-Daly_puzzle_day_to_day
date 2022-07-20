@@ -1,0 +1,296 @@
+///how to use 
+import { Footer, Navbar } from "@components/layout";
+import React, { useEffect, useState } from "react";
+import { useCSVDownloader } from "react-papaparse";
+import Pagination from "./Pagination";
+
+const Data = ({ items }) => {
+  const { CSVDownloader, Type } = useCSVDownloader();
+
+  const [showItem, setShowItem] = useState([]);
+  const onChangePage = (pageOfItems) => {
+    setShowItem(pageOfItems);
+  };
+  return (
+    <section className="bg-primary">
+      <Navbar />
+
+      <div className="flex md:px-[10%] py-[5%]">
+        <div className="bg-cards border-2 border-cards rounded-xl px-7 mx-1.5">
+          <img
+            className="scale-75 mx-auto"
+            src="/assets/images/project/IMG.png"
+            alt=" "
+          />
+          <h1 className="text-xl font-bold py-5 text-white text-center">
+            Bored Monkey
+          </h1>
+        </div>
+        <section className="bg-cards border-2 border-cards rounded-xl mx-1.5 w-[80%]">
+          <div className="flex justify-between py-10 px-7">
+            <h1 className="text-xl font-bold text-white">
+              Bored Monkey - Raffle Entries
+            </h1>
+            <div>
+              <button className="bg-gradient-to-l from-red1 via-red2 to-red3 text-white px-5 text-sm py-2 font-medium rounded-3xl text-center mx-2">
+                End Raffle
+              </button>
+
+              <CSVDownloader
+                type={Type.Button}
+                filename={"filename"}
+                data={items}
+              >
+                <button className="bg-gradient-to-l from-blue1 via-blue2 to-blue3 text-white px-5 text-sm py-2 font-medium rounded-3xl text-center mx-2">
+                  Export CSV
+                </button>
+              </CSVDownloader>
+            </div>
+          </div>
+          <table className="w-full">
+            <thead>
+              <tr className="text-base font-bold text-grey">
+                <th>Twitter Name</th>
+                <th>Discord ID</th>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {showItem.map((item, index) => (
+                <tr
+                  className="text-center text-base font-medium text-white"
+                  style={{
+                    backgroundColor:
+                      index % 2 === 0 ? "" : "rgba(217, 217, 217, 0.06)",
+                  }}
+                >
+                  <td className="py-4">{item.twitter}</td>
+                  <td className="py-4">{item.discord}</td>
+                  <td className="py-4">{item.add}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination pageSize={7} items={items} onChangePage={onChangePage} />
+        </section>
+      </div>
+
+      <Footer />
+    </section>
+  );
+};
+
+Data.defaultProps = {
+  items: [
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+    {
+      twitter: "@TheSandBoxGame",
+      discord: "@TheSandBoxGame",
+      add: "www.thesandboxgame.com",
+    },
+   
+  ],
+};
+
+export default Data;
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////
+////pagination component
+
+
+
+import React from "react";
+
+class Pagination extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pager: {},
+      initialPage: 1,
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.items && this.props.items.length) {
+      this.setPage(this.state.initialPage);
+      this.setState({
+        pageSize: this.props.pageSize,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // reset page if items array has changed
+    if (this.props.items !== prevProps.items) {
+      this.setPage(this.state.initialPage);
+    }
+  }
+
+  setPage = (page) => {
+    let { items, pageSize } = this.props;
+    let pager = this.state.pager;
+
+    // get new pager object for specified page
+    pager = this.getPager(items.length, page, pageSize);
+
+    // get new page of items from items array
+    let pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+
+    // update state
+    this.setState({ pager: pager });
+
+    // call change page function in parent component
+    this.props.onChangePage(pageOfItems);
+  };
+
+  getPager = (totalItems, currentPage, pageSize) => {
+    // default to first page
+    currentPage = currentPage || 1;
+
+    // default page size is 10
+    pageSize = pageSize || 10;
+
+    // calculate total pages
+    let totalPages = Math.ceil(totalItems / pageSize);
+
+    let startPage, endPage;
+    if (totalPages <= 5) {
+      // less than 10 total pages so show all
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      // more than 10 total pages so calculate start and end pages
+      if (currentPage <= 3) {
+        startPage = 1;
+        endPage = 5;
+      } else if (currentPage + 2 >= totalPages) {
+        startPage = totalPages - 4;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - 2;
+        endPage = currentPage + 2;
+      }
+    }
+
+    // calculate start and end item indexes
+    let startIndex = (currentPage - 1) * pageSize;
+    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+
+    // create an array of pages to ng-repeat in the pager control
+    let pages = [...Array(endPage + 1 - startPage).keys()].map(
+      (i) => startPage + i
+    );
+
+    // return object with all pager properties required by the view
+    return {
+      totalItems: totalItems,
+      currentPage: currentPage,
+      pageSize: pageSize,
+      totalPages: totalPages,
+      startPage: startPage,
+      endPage: endPage,
+      startIndex: startIndex,
+      endIndex: endIndex,
+      pages: pages,
+    };
+  };
+
+  render() {
+    let pager = this.state.pager;
+
+    if (!pager.pages || pager.pages.length <= 1) {
+      // don't display pager if there is only 1 page
+      return null;
+    }
+
+    return (
+      <div className="row pro-result">
+        <div className="col-xl-6 col-lg-6 col-md-6 col-12 pagination-style">
+          <div className="pagination">
+            <ul>
+              <li>
+                <button
+                  disabled={pager.currentPage === 1}
+                  onClick={() => this.setPage(pager.currentPage - 1)}
+                >
+                  Previous
+                </button>
+              </li>
+              {pager.pages.map((page, index) => (
+                <li key={index}>
+                  <button
+                    className={pager.currentPage === page ? "active" : ""}
+                    onClick={() => this.setPage(page)}
+                  >
+                    {page}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button
+                  disabled={pager.currentPage === pager.totalPages}
+                  onClick={() => this.setPage(pager.currentPage + 1)}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Pagination;
