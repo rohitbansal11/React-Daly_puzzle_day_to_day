@@ -1,0 +1,59 @@
+import { CSVLink, CSVDownload } from "react-csv";
+
+const csvData = [
+  ["firstname", "lastname", "email"],
+  ["Ahmed", "Tomi", "ah@smthing.co.com"],
+  ["Raed", "Labes", "rl@smthing.co.com"],
+  ["Yezzi", "Min l3b", "ymin@cocococo.com"]
+];
+<CSVLink data={csvData}>Download me</CSVLink>;
+// or
+<CSVDownload data={csvData} target="_blank" />;
+
+
+
+const headers = [
+    { label: "Id", key: "id" },
+    { label: "Name", key: "name" },
+    { label: "Fantacy Point", key: "fpoint" },
+    { label: "Salary", key: "salary" },
+    { label: "Position", key: "pos" },
+    { label: "Opposition", key: "opp" },
+    { label: "Team", key: "team" },
+    { label: "Proj Own", key: "projOwn" },
+    { label: "Proj Value", key: "projvalue" },
+    { label: "Poin Per Doller", key: "pointperDoller" },
+    { label: "userproj", key: "userproj" },
+    { label: "Max Expossure", key: "maxexp" },
+    { label: "Min Expossure", key: "minexp" },
+  ];
+  
+   <CSVLink
+                            className="export_csv"
+                            data={currentTeamsData}
+                            filename={"Kivin_Lineineup.csv"}
+                            headers={headers}
+                            style={{
+                              textDecoration: "none",
+                            }}
+                          >
+                            <Button
+                              variant="outlined"
+                              sx={{
+                                backgroundColor: "white",
+                                padding: 1,
+                                color: "black",
+                                borderColor: "gray",
+                                textDecoration: "none",
+                                fontSize: "0.6vw",
+                                "&:hover": {
+                                  backgroundColor: "#131417",
+                                  border: "none",
+                                  textDecoration: "none",
+                                  color: "white",
+                                },
+                              }}
+                            >
+                              Export Csv
+                            </Button>
+                          </CSVLink>
