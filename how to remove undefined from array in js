@@ -1,0 +1,5 @@
+var data = [42, 21, undefined, 50, 40, undefined, 9];
+
+data = data.filter(function( element ) {
+   return element !== undefined;
+});
